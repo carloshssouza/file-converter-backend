@@ -20,11 +20,24 @@ Serviço backend para conversão de arquivos de imagem usando NestJS e RabbitMQ.
 
 ```bash
 # Clone o repositório
-git clone [URL_DO_REPOSITÓRIO]
+git clone https://github.com/carloshssouza/file-converter-backend.git
 cd file-converter-backend
 
 # Instale as dependências
 npm install
+```
+
+## Configuração
+
+```bash
+# Crie um arquivo .env na raiz do projeto
+touch .env
+```
+Copie e cole o conteúdo o conteúdo abaixo para o arquivo .env
+```bash
+RABBITMQ_URL=amqp://localhost:5672
+UPLOAD_DIR=./tmp/uploads
+PORT=8000 
 ```
 
 ## Executando o Projeto
@@ -34,7 +47,7 @@ npm install
 1. Inicie o RabbitMQ
 2. Inicie a API:
 ```bash
-npm run start:api
+npm run start:prod
 ```
 3. Em outro terminal, inicie o worker:
 ```bash
@@ -52,16 +65,17 @@ docker-compose up --build
 ### Endpoint de Upload
 
 ```
-POST /files/upload
+POST /upload
 ```
 
 **Body (multipart/form-data):**
 - `file`: Arquivo de imagem
 - `outputFormat`: Formato de saída (jpeg, png, webp, tiff, avif)
 
-**Exemplo:**
+**Exemplo:** 
+`http://localhost:3000/upload?outputFormat=png`
 ```bash
-curl -X POST http://localhost:3000/files/upload \
+curl -X POST http://localhost:3000/upload \
   -F "file=@imagem.jpg" \
   -F "outputFormat=png"
 ```
